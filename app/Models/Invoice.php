@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Section;
+use App\Models\InvoiceDetail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    // الحقول التي يمكن ملؤها بقيم
     protected $fillable = [
         'invoice_number',
         'invoice_Date',
@@ -31,12 +32,15 @@ class Invoice extends Model
         'Payment_Date',
     ];
 
-    // الحقول التي تمثل تواريخ
     protected $dates = ['deleted_at'];
 
-    // العلاقة بين جدول الفاتورة وجدول القسم
+
     public function section(): BelongsTo
     {
         return $this->belongsTo(Section::class);
+    }
+    public function details()
+    {
+        return $this->hasMany(InvoiceDetail::class);
     }
 }

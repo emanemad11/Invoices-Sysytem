@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-
     public function index()
     {
         $sections = Section::all();
@@ -19,24 +18,24 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         Product::create([
-            'Product_name' => $request->Product_name,
-            'section_id' => $request->section_id,
-            'description' => $request->description,
+            'Product_name'    => $request->Product_name,
+            'section_id'      => $request->section_id,
+            'description'     => $request->description,
         ]);
-        session()->flash('Add', 'تم اضافة المنتج بنجاح ');
+
+        session()->flash('Add', 'تم إضافة المنتج بنجاح');
         return back();
     }
 
     public function update(Request $request)
     {
-        $id = Section::where('section_name', $request->section_name)->first()->id;
+        $sectionId = Section::where('section_name', $request->section_name)->firstOrFail()->id;
 
-        $Products = Product::findOrFail($request->pro_id);
-
-        $Products->update([
-        'Product_name' => $request->Product_name,
-        'description' => $request->description,
-        'section_id' => $id,
+        $product = Product::findOrFail($request->pro_id);
+        $product->update([
+            'Product_name'    => $request->Product_name,
+            'description'     => $request->description,
+            'section_id'      => $sectionId,
         ]);
 
         session()->flash('Edit', 'تم تعديل المنتج بنجاح');
@@ -45,8 +44,9 @@ class ProductController extends Controller
 
     public function destroy(Request $request)
     {
-        $Products = Product::findOrFail($request->pro_id);
-        $Products->delete();
+        $product = Product::findOrFail($request->pro_id);
+        $product->delete();
+
         session()->flash('delete', 'تم حذف المنتج بنجاح');
         return back();
     }

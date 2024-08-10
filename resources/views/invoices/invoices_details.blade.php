@@ -223,7 +223,7 @@
                                                                 name="uploadedFile">تاكيد</button>
                                                         </form>
                                                     </div>
-                                               
+
                                                 <br>
 
                                                 <div class="table-responsive mt-15">
@@ -250,13 +250,13 @@
                                                                     <td colspan="2">
 
                                                                         <a class="btn btn-outline-success btn-sm"
-                                                                            href="{{ url('View_file') }}/{{ $invoices->invoice_number }}/{{ $attachment->file_name }}"
+                                                                            href="{{ url('view-file') }}/{{ $invoices->invoice_number }}/{{ $attachment->file_name }}"
                                                                             role="button"><i
                                                                                 class="fas fa-eye"></i>&nbsp;
                                                                             عرض</a>
 
                                                                         <a class="btn btn-outline-info btn-sm"
-                                                                            href="{{ url('download') }}/{{ $invoices->invoice_number }}/{{ $attachment->file_name }}"
+                                                                            href="{{ url('download-file') }}/{{ $invoices->invoice_number }}/{{ $attachment->file_name }}"
                                                                             role="button"><i
                                                                                 class="fas fa-download"></i>&nbsp;
                                                                             تحميل</a>
@@ -305,7 +305,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('delete_file') }}" method="post">
+                <form action="{{ url('delete-file') }}" method="post">
 
                     {{ csrf_field() }}
                     <div class="modal-body">

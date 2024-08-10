@@ -10,29 +10,24 @@ class InvoiceAttacchmentController extends Controller
 {
     public function store(Request $request)
     {
-        $this->validate($request, [
-
-            'file_name' => 'mimes:pdf,jpeg,png,jpg',
-
-        ], [
-            'file_name.mimes' => 'صيغة المرفق يجب ان تكون   pdf, jpeg , png , jpg',
+        $request->validate([
+            'file_name' => 'required|mimes:pdf,jpeg,png,jpg',
         ]);
 
-        $image = $request->file('file_name');
-        $file_name = $image->getClientOriginalName();
+        $file = $request->file('file_name');
+        $file_name = $file->getClientOriginalName();
 
-        $attachments =  new InvoiceAttacchment();
-        $attachments->file_name = $file_name;
-        $attachments->invoice_number = $request->invoice_number;
-        $attachments->invoice_id = $request->invoice_id;
-        $attachments->Created_by = Auth::user()->name;
-        $attachments->save();
+        $attachment = InvoiceAttacchment::create([
+            'file_name' => $file_name,
+            'invoice_number' => $request->invoice_number,
+            'invoice_id' => $request->invoice_id,
+            'Created_by' => Auth::user()->name,
+        ]);
 
-        // move pic
-        $imageName = $request->file_name->getClientOriginalName();
-        $request->file_name->move(public_path('Attachments/' . $request->invoice_number), $imageName);
+        $file->move(public_path('Attachments/' . $request->invoice_number), $file_name);
 
-        session()->flash('Add', 'تم اضافة المرفق بنجاح');
+        session()->flash('Add', 'تم إضافة المرفق بنجاح');
         return back();
     }
+
 }
